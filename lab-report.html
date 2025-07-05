@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Medical Lab Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .form-section, .report-section { max-width: 600px; margin: 0 auto 30px auto; }
+        .form-section input, .form-section select { width: 100%; margin-bottom: 10px; padding: 8px; }
+        .report-section { border: 1px solid #ccc; padding: 20px; background: #f9f9f9; }
+        .report-header { text-align: center; margin-bottom: 20px; }
+        .report-table { width: 100%; border-collapse: collapse; }
+        .report-table th, .report-table td { border: 1px solid #ddd; padding: 8px; }
+        .print-btn { display: block; margin: 20px auto; padding: 10px 30px; font-size: 16px; }
+        @media print {
+            body * { visibility: hidden; }
+            #printable-report, #printable-report * { visibility: visible; }
+            #printable-report { position: absolute; left: 0; top: 0; width: 100%; }
+            .print-btn, .form-section { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-section">
+        <h2>Enter Lab Report Details</h2>
+        <form id="labForm">
+            <label>Patient Name: <input type="text" id="patientName" required></label>
+            <label>Date of Birth: <input type="date" id="dob" required></label>
+            <label>Report Date: <input type="date" id="reportDate" required></label>
+            <label>Test Name: <input type="text" id="testName" required></label>
+            <label>Result: <input type="text" id="result" required></label>
+            <label>Reference Range: <input type="text" id="refRange"></label>
+            <label>Units: <input type="text" id="units"></label>
+            <button type="submit">Generate Report</button>
+        </form>
+    </div>
+
+    <div class="report-section" id="printable-report" style="display:none;">
+        <div class="report-header">
+            <h1>MEDICAL LAB TEST</h1>
+            <h3>Medical Center: Department of Pathology</h3>
+        </div>
+        <div>
+            <strong>Patient Name:</strong> <span id="rPatientName"></span><br>
+            <strong>Date of Birth:</strong> <span id="rDob"></span><br>
+            <strong>Report Date:</strong> <span id="rReportDate"></span><br>
+        </div>
+        <hr>
+        <table class="report-table">
+            <thead>
+                <tr>
+                    <th>Test Name</th>
+                    <th>Result</th>
+                    <th>Reference Range</th>
+                    <th>Units</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="rTestName"></td>
+                    <td id="rResult"></td>
+                    <td id="rRefRange"></td>
+                    <td id="rUnits"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <button class="print-btn" id="printBtn" style="display:none;">Print Report</button>
+
+    <script>
+        const form = document.getElementById('labForm');
+        const reportSection = document.getElementById('printable-report');
+        const printBtn = document.getElementById('printBtn');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('rPatientName').textContent = document.getElementById('patientName').value;
+            document.getElementById('rDob').textContent = document.getElementById('dob').value;
+            document.getElementById('rReportDate').textContent = document.getElementById('reportDate').value;
+            document.getElementById('rTestName').textContent = document.getElementById('testName').value;
+            document.getElementById('rResult').textContent = document.getElementById('result').value;
+            document.getElementById('rRefRange').textContent = document.getElementById('refRange').value;
+            document.getElementById('rUnits').textContent = document.getElementById('units').value;
+            reportSection.style.display = 'block';
+            printBtn.style.display = 'block';
+            window.scrollTo(0, document.body.scrollHeight);
+        });
+
+        printBtn.addEventListener('click', function() {
+            window.print();
+        });
+    </script>
+</body>
+</html>
